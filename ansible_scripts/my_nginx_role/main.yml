@@ -1,0 +1,22 @@
+---
+- name: Working with nginx server
+  hosts: all
+  become: true
+  tasks:
+    - name: Install nginx server
+      apt:
+        update_cache: yes
+        name: nginx
+        state: present
+    - name: Ensure service is up
+      service:
+        name: nginx
+        state: started
+    - name: Copy the index file
+      ansible.builtin.template:
+        src: ./index.html
+        dest: /var/www/html/index.html
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: restarted
